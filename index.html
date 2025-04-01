@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>彻底疯狂</title>
+    <title>天生万物以养人</title>
     <style>
         body {
             margin: 0;
@@ -13,22 +13,67 @@
             align-items: center;
             min-height: 100vh;
             background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
+        }
+        
+        .poem-container {
+            position: relative;
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        .poem-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 40px 30px;
+            position: relative;
+            line-height: 1.8;
+            font-size: 1.1em;
+            text-align: center;
+            border: 1px solid #e0e0e0;
         }
         
         .poem {
-            text-align: left;
             white-space: pre-line;
-            padding: 20px;
-            max-width: 90%;
-            line-height: 1.6;
-            margin: 0 auto;
+            text-align: left;
+            padding: 0 10px;
+            font-weight: 500;
+        }
+        
+        .quote {
+            position: absolute;
+            font-size: 60px;
+            color: rgba(0, 0, 0, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .quote-top {
+            top: 10px;
+            left: 15px;
+        }
+        
+        .quote-bottom {
+            bottom: 10px;
+            right: 15px;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="poem">
-天生万物以养人，世人犹怨天不仁。
+    <div class="poem-container">
+        <div class="poem-card">
+            <div class="quote quote-top">“</div>
+            <div class="title">《七杀诗》</div>
+            <div class="poem">天生万物以养人，世人犹怨天不仁。
 不知蝗蠹遍天下，苦尽苍生尽王臣。
 
 人之生矣有贵贱，贵人长为天恩眷。
@@ -48,7 +93,9 @@
 状元百官都如狗，总是刀下觳觫材。
 
 传令麾下四王子，破城不须封刀匕。
-山头代天树此碑，逆天之人立死跪亦死！
+山头代天树此碑，逆天之人立死跪亦死！</div>
+            <div class="quote quote-bottom">”</div>
+        </div>
     </div>
 </body>
 </html>
