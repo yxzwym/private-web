@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠曰</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #8B4513;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #A0522D;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid #8B4513;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐭 鼠曰 🐭</h1>
+        
+        <div>
+            <h3>输入文本：</h3>
+            <textarea id="inputText" placeholder="在这里输入要加密或解密的文本..."></textarea>
+        </div>
+        
+        <div class="button-group">
+            <button onclick="encodeToMouse()">加密为鼠曰</button>
+            <button onclick="decodeFromMouse()">解密鼠曰</button>
+            <button onclick="clearText()">清空</button>
+        </div>
+        
+        <div>
+            <h3>结果：</h3>
+            <div class="result" id="result"></div>
+        </div>
+        
+        <div class="footer">
+            <p>鼠曰：嘁吱咩唧嘶咩吱吱嘁喳嗞吱嗞哞咯嘁。鼠也。</p>
+        </div>
+    </div>
+
+    <script>
+        // 鼠语拟声词库 - 每个16进制字符对应一个鼠语词
+        const mouseSoundMap = {
+            '0': '吱', '1': '叽', '2': '啾', '3': '唧', 
+            '4': '嗞', '5': '嘶', '6': '嘁', '7': '喳',
+            '8': '咯', '9': '哒', 'A': '咪', 'B': '喵',
+            'C': '呜', 'D': '汪', 'E': '哞', 'F': '咩'
+        };
+        
+        // 反转映射表，用于解密
+        const reverseMouseSoundMap = {};
+        for (const key in mouseSoundMap) {
+            reverseMouseSoundMap[mouseSoundMap[key]] = key;
+        }
+        
+        // 加密函数：将普通文本转为鼠曰
+        function encodeToMouse() {
+            const inputText = document.getElementById('inputText').value.trim();
+            if (!inputText) {
+                alert('请输入要加密的文本！');
+                return;
+            }
+            
+            let encoded = [];
+            for (let i = 0; i < inputText.length; i++) {
+                const char = inputText[i];
+                // 获取Unicode的16进制表示（补足4位）
+                const hexCode = char.charCodeAt(0).toString(16).toUpperCase().padStart(4, '0');
+                
+                // 每个16进制数字转换为对应的鼠语词
+                for (let j = 0; j < hexCode.length; j++) {
+                    const hexChar = hexCode[j];
+                    encoded.push(mouseSoundMap[hexChar] || '?');
+                }
+            }
+            
+            // 组合成鼠曰格式
+            const result = `鼠曰：${encoded.join('')}。鼠也。`;
+            document.getElementById('result').textContent = result;
+        }
+        
+        // 解密函数：将鼠曰转为普通文本
+        function decodeFromMouse() {
+            const inputText = document.getElementById('inputText').value.trim();
+            if (!inputText) {
+                alert('请输入要解密的鼠曰文本！');
+                return;
+            }
+            
+            // 提取鼠曰正文（去掉"鼠曰："和"鼠也。"）
+            let mouseText = inputText;
+            if (mouseText.startsWith('鼠曰：')) {
+                mouseText = mouseText.substring(3);
+            }
+            if (mouseText.endsWith('鼠也。')) {
+                mouseText = mouseText.substring(0, mouseText.length - 3);
+            }
+            mouseText = mouseText.trim();
+            
+            // 将鼠语词转为16进制数字
+            let hexCodes = [];
+            for (let i = 0; i < mouseText.length; i++) {
+                const mouseChar = mouseText[i];
+                const hexChar = reverseMouseSoundMap[mouseChar];
+                if (hexChar) {
+                    hexCodes.push(hexChar);
+                }
+            }
+            
+            // 每4个16进制数字对应一个Unicode字符
+            let decoded = [];
+            for (let i = 0; i < hexCodes.length; i += 4) {
+                const hexGroup = hexCodes.slice(i, i + 4).join('');
+                if (hexGroup.length === 4) {
+                    const charCode = parseInt(hexGroup, 16);
+                    if (!isNaN(charCode)) {
+                        decoded.push(String.fromCharCode(charCode));
+                    }
+                }
+            }
+            
+            document.getElementById('result').textContent = decoded.join('');
+        }
+        
+        // 清空文本
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('result').textContent = '';
+        }
+    </script>
+</body>
+</html>
